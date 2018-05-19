@@ -3,6 +3,7 @@ from operator import itemgetter
 from fnmatch import fnmatch
 import re
 import csv
+import argparse
 
 home_directory = (os.environ['HOME'])
 
@@ -25,6 +26,19 @@ requested_data = ['PROBLEM_NAME',
                   'MODE']
 
 # CODE
+
+# argument parsing
+parser = argparse.ArgumentParser()
+parser.add_argument("--keywords",
+                    help="unique keyword for the files you want to process"
+                    )
+
+args = parser.parse_args()
+if args.keywords:
+    print "USING SPECIFIED KEYWORDS: " + args.keywords + "\n------------"
+    exact_set = args.keywords
+
+
 
 dirpattern = '*' + exact_set + '*' 
 logfile_pattern = "*.log"
