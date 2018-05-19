@@ -6,6 +6,10 @@ import csv
 
 home_directory = (os.environ['HOME'])
 
+# This script looks for .log files recursively in specified directory.
+# Then, it recovers requested data from the .log file as specified.\
+# It exports the data into a CSV file and sorts it by requested column.
+
 
 
 batch = home_directory + '/downloaded_results/batch_correct_1'
@@ -14,6 +18,11 @@ path = batch
 csv_output_folder = home_directory + '/mc_data/csv/' 
 csv_file_name = csv_output_folder + exact_set + '.csv'
 
+requested_data = ['PROBLEM_NAME',
+                  'BUDGET',
+                  'CTIME',
+                  'SESSION_TIME',
+                  'REWARDS']
 
 dirpattern = '*' + exact_set + '*' 
 logfile_pattern = "*.log"
@@ -45,11 +54,6 @@ for directory in dirs:
     for path, subdirs, files in os.walk(directory):
         filenames.extend(os.path.join(path, name) for name in files) 
        
-requested_data = ['PROBLEM_NAME',
-                  'BUDGET',
-                  'CTIME',
-                  'SESSION_TIME',
-                  'REWARDS']
 
 rewards = []
 datasets = []  
