@@ -36,3 +36,7 @@
 
 # Exported files
 *.csv
+
+# Miscellaneous files
+*.swp
+*.swo
