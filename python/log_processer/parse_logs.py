@@ -4,12 +4,18 @@ from fnmatch import fnmatch
 import re
 import csv
 
-batch = '/home/owl/downloaded_results/batch_correct_1'
+home_directory = (os.environ['HOME'])
+
+
+
+batch = home_directory + '/downloaded_results/batch_correct_1'
 exact_set = 'fpr_eop'
-
 path = batch
+csv_output_folder = home_directory + '/mc_data/csv/' 
+csv_file_name = csv_output_folder + exact_set + '.csv'
 
-dirpattern = "*fpr_eop*"
+
+dirpattern = '*' + exact_set + '*' 
 logfile_pattern = "*.log"
 
 dirs = []
@@ -73,58 +79,9 @@ for name in filenames:
                 rewards.append(datatag.split(":")[1])
        
 
+with open(csv_file_name, 'a+') as csvfile:
+    fieldnames = ['dataset', 'rewards', 'ctime', 'sessiontime']
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-    #datasets.extend(re.findall("DATASET:", filetext))
-    #string = (re.search('REWARDS:\d+', filetext))
-    #print string.group(0) 
-    #rewards.extend(string.group(0))
-    #string = (re.search(('DATASET:\^'), filetext))
-    #rewards.extend((re.search('\d+', string)))
-    #print string
-
-
-#print rewards 
-        
-        
-        #if 'REWARD' in inf.read():
-         #   print ("tru")
-#def open_files(filenames):
- #   for name in filenames:
-        #yield open(name, 'r', encoding='utf-8')
-        #if 'REWARD' in open(name).read():
-  #      print name 
-        #print("true")
-
-#def find_files(pattern, top_level_dir):
- #   for path, dirlist, filelist in os.walk('/user/home/owl/downloaded_results/batch_correct_1/chao_4_batch_fpr_eop_batch1/rslt_chao_4_drones_04_nrad_0_nres_4_drad_0_dres_4_b_55_btch_fpr_eop_batch1'):
-  #      for name in fnmatch.filter(filelist, pattern):
-   #         yield os.path.join(path, name)
-
-
-#txtfiles = find_files('*.txt')
-
-
-
-#def lines_from_files(files):
- #   for f in files:
-  #      for line in f:
-   #         yield line
-
-
-#def find_errors(lines):
- #   pattern = re.compile('RESULT:')
-  #  for line in lines:
-   #     if pattern.search(line):
-    #        print(line) 
-
-
-#m = re.search('RESULT:(d+)', ) 
-#m.group(1)
-
-#def find_errors(lines):
- #   pattern = re.compile('RESULT:`')
-  #  for line in lines:
-    #    if pattern.search(line):
-     #         print(line) 
-
-
+    writer.writeheader()
+    writer.writerow({'dataset': 'Baked', 'rewards': 'Beans'})
