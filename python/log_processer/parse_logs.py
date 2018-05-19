@@ -7,22 +7,24 @@ import csv
 home_directory = (os.environ['HOME'])
 
 # This script looks for .log files recursively in specified directory.
-# Then, it recovers requested data from the .log file as specified.\
+# Then, it recovers requested data from the .log file as specified.
 # It exports the data into a CSV file and sorts it by requested column.
 
 
+# PARAMS
 
-batch = home_directory + '/downloaded_results/batch_correct_1'
-exact_set = 'fpr_eop'
-path = batch
-csv_output_folder = home_directory + '/mc_data/csv/' 
-csv_file_name = csv_output_folder + exact_set + '.csv'
+batch = home_directory + '/downloaded_results/batch_correct_1' # where to look for files
+exact_set = 'fpr_res4'                                          # identifier of test (e.g. run1, test2..)
+csv_output_folder = home_directory + '/mc_data/csv/'           # where to output csv files 
 
 requested_data = ['PROBLEM_NAME',
                   'BUDGET',
                   'CTIME',
                   'SESSION_TIME',
-                  'REWARDS']
+                  'REWARDS',
+                  'MODE']
+
+# CODE
 
 dirpattern = '*' + exact_set + '*' 
 logfile_pattern = "*.log"
@@ -31,6 +33,8 @@ dirs = []
 directories = []
 
 print ("processing logfiles from folders:\n")
+
+path = batch
 
 for root, subdirs, files in os.walk(path):
     for dirname in subdirs:
@@ -61,6 +65,8 @@ rw_pattern = "REWARDS:\d+"
 
 print "In total, there are " + str(len(filenames))+ " logfiles in " + str(len(directories)) + " folders."
 print str(len(dirs)) + " tests were run, producing " + str(len(filenames)) + " logfiles."  
+
+csv_file_name = csv_output_folder + exact_set + '.csv'
 
 with open(csv_file_name, 'w+') as csvfile:
     fieldnames = requested_data
