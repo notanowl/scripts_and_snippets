@@ -30,15 +30,19 @@ requested_data = ['PROBLEM_NAME',
 # argument parsing
 parser = argparse.ArgumentParser()
 parser.add_argument("--keywords",
-                    help="unique keyword for the files you want to process"
-                    )
+                    help="unique keyword for the files you want to process")
+parser.add_argument("--batch",
+                    help="batch (= folder) in which the logs are" )
 
 args = parser.parse_args()
 if args.keywords:
-    print "USING SPECIFIED KEYWORDS: " + args.keywords + "\n------------"
+    print "USING SPECIFIED KEYWORDS: " + args.keywords
     exact_set = args.keywords
+if args.batch:
+    print "USING SPECIFIED BATCH: " + args.batch
+    batch = home_directory + '/downloaded_results/' + args.batch + '/'
 
-
+print  "\n------------"
 
 dirpattern = '*' + exact_set + '*' 
 logfile_pattern = "*.log"
