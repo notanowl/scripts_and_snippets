@@ -12,7 +12,8 @@ home_directory = (os.environ['HOME'])
 path = home_directory + '/mc_data/csv/'
 
 # which CSV to parse and plot
-csv_to_print = 'fpr_dtop.csv'
+# WITHOUT .csv extension
+csv_to_print = 'fpr_dtop'
 
 # insert headers which to parse from CSV
 what_we_want = ['SESSION_TIME', 'REWARDS']
@@ -65,7 +66,7 @@ y = []
 found_x = False
 found_y = False
 
-csv_path = path + csv_to_print 
+csv_path = path + csv_to_print + '.csv' 
 with open(csv_path) as csvDataFile:
     csvReader = csv.reader(csvDataFile)
     for rownum, row in enumerate(csvReader):
