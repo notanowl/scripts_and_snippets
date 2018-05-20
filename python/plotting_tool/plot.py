@@ -17,6 +17,8 @@ csv_to_print = 'fpr_dtop.csv'
 # insert headers which to parse from CSV
 what_we_want = ['SESSION_TIME', 'REWARDS']
 
+line_label = 'Collected reward'
+
 # alternatively, specify columns to plot
 # (note that the headers above have priority)
 
@@ -88,22 +90,20 @@ with open(csv_path) as csvDataFile:
             x.append(row[x_column])
             y.append(row[y_column])
 
-#plt.figure(figsize=(w/monitor_dpi, h/monitor_dpi), dpi=monitor_dpi)
+
 fig, ax = plt.subplots(figsize=(w/monitor_dpi, h/monitor_dpi), dpi=monitor_dpi)
 
 x = map(float, x)
 y = map(float, y)
 
+if sort_x:
+    to_sort = zip(x,y)
+    to_sort.sort()
+    result = ([ a for a,b in to_sort ], [ b for a,b in to_sort ])
+    x = result[0]
+    y = result[1]
 
-to_sort = zip(x,y)
-to_sort.sort()
-
-result = ([ a for a,b in to_sort ], [ b for a,b in to_sort ])
-
-x = result[0]
-y = result[1]
-
-plt.plot(x,y)
+fig = plt.plot(x,y, label=line_label)
 
 #TITLE AND LEGEND
 plt.suptitle(csv_to_print, fontsize = 24)
@@ -164,6 +164,8 @@ gridlines = ax.get_xgridlines() + ax.get_ygridlines()
 for line in gridlines:
     line.set_linestyle('--')
 
+#plt.legend(handles=[fig])
+plt.legend()
 
 plt.savefig(csv_to_print + '.svg')
 plt.show()
