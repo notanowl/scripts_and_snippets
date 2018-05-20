@@ -1,9 +1,12 @@
 import csv
 import os
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
-
+import math
 home_directory = (os.environ['HOME'])
+
+
 
 
 # PARAMS
@@ -27,6 +30,12 @@ x_column = 0
 y_column = 1
 
 ### GRID SETTINGS ###
+
+# set logarithmic scales on or off
+logarithmic_x = True
+logarithmic_y = False
+
+
 # if auto_grid is on,
 # plot is automatically scaled
 auto_grid = True
@@ -53,8 +62,8 @@ sort_x = True
 # size of graph
 # w = width, h = height
 
-w = 400 
-h = 400
+w = 800 
+h = 800
 monitor_dpi = 96
 
 # CODE
@@ -94,6 +103,7 @@ with open(csv_path) as csvDataFile:
 
 fig, ax = plt.subplots(figsize=(w/monitor_dpi, h/monitor_dpi), dpi=monitor_dpi)
 
+
 x = map(float, x)
 y = map(float, y)
 
@@ -107,26 +117,27 @@ if sort_x:
 fig = plt.plot(x,y, label=line_label)
 
 #TITLE AND LEGEND
-plt.suptitle(csv_to_print, fontsize = 24)
-ax.set_xlabel(what_we_want[0], fontsize = 18)
-ax.set_ylabel(what_we_want[1], fontsize = 18)
+plt.suptitle(csv_to_print, fontsize = 18)
+ax.set_xlabel(what_we_want[0], fontsize = 12)
+ax.set_ylabel(what_we_want[1], fontsize = 12)
 
 # GRID SETTINGS
 #major_ticks = np.arange(0, 150, 10)
 #minor_ticks = np.arange(0, 150, 5)
 
 if auto_grid:
-    x_range = max(x) 
-    x_start = min(x) 
-    y_range = max(y)
-    y_start = min(y)
+    x_range = int(round(math.ceil(max(x))))
+    x_start = int(round(min(x))) 
+    y_range = int(round(math.ceil(max(y))))
+    y_start = int(round(min(y)))
     
 
-    x_grid_spacing = (float(x_range - x_start) / float(10))
-    y_grid_spacing = (float(y_range - y_start) / float(10))
+    x_grid_spacing = (x_range - x_start) / 6 
+    y_grid_spacing = (y_range - y_start) / 6 
     minors_to_major=5
     
     y_range += y_grid_spacing
+
 
 
 ax.set_ylim(y_start, y_range)
@@ -147,7 +158,7 @@ ax.set_yticks(major_yticks)
 # I want minor ticks for x axis
 minor_x_spacing = (float(x_grid_spacing)/float(minors_to_major))
 
-minor_xticks = np.arange(x_start, x_range, minor_x_spacing)
+minor_xticks = np.arange(x_start, x_range, minor_x_spacing) #minor_x_spacing)
 ax.set_xticks(minor_xticks, minor=True)
 
 # I want minor ticks for y axis
@@ -157,8 +168,22 @@ minor_yticks = np.arange(y_start, y_range, minor_y_spacing)
 ax.set_yticks(minor_yticks, minor=True)
 
 
-#print val1
-#plt.grid(True)
+if logarithmic_x:
+    ax.set_xscale('log')
+    
+    ax.xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
+    #ax.xaxis.set_minor_formatter(matplotlib.ticker.ScalarFormatter())
+    plt.autoscale(enable=True, axis='x')
+    ax.set_xlim([np.min(x), np.max(x)])
+
+if logarithmic_y:
+    ay.set_yscale('log')
+    ay.xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
+    #ax.xaxis.set_minor_formatter(matplotlib.ticker.ScalarFormatter())
+    plt.autoscale(enable=True, axis='y')
+    ax.set_ylim([np.min(y), np.max(y)])
+
+
 ax.grid(b=True, which='both')
 
 gridlines = ax.get_xgridlines() + ax.get_ygridlines()
